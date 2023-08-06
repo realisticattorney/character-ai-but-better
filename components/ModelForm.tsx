@@ -11,8 +11,6 @@ const ModelForm: React.FC = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-
-  
   console.log("messages", messages);
 
   const handleSubmit = async (event: FormEvent) => {
@@ -21,6 +19,7 @@ const ModelForm: React.FC = () => {
 
     setMessages([...messages, { text: prompt, isUser: true }]);
     setPrompt("");
+    console.log("prompt", JSON.stringify({ prompt }));
     try {
       const res = await fetch("/api/model", {
         method: "POST",
@@ -33,7 +32,7 @@ const ModelForm: React.FC = () => {
       });
       const data = await res.json();
       console.log("data", data);
-      const cleanResponse = data.response.choices[0].text; // get the generated text from the 'text' property
+      const cleanResponse = data; // get the generated text from the 'text' property
       setMessages([
         ...messages,
         { text: prompt, isUser: true },
